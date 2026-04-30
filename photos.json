@@ -1,0 +1,26 @@
+{
+  "animals": [
+    "photos/animals/animals-1.jpg",
+    "photos/animals/animals-2.jpg",
+    "photos/animals/animals-3.jpg",
+    "photos/animals/animals-4.jpg",
+    "photos/animals/animals-5.jpg",
+    "photos/animals/animals-6.jpg"
+  ],
+  "nature": [
+    "photos/nature/nature-1.jpg",
+    "photos/nature/nature-2.jpg",
+    "photos/nature/nature-3.jpg",
+    "photos/nature/nature-4.jpg",
+    "photos/nature/nature-5.jpg",
+    "photos/nature/nature-6.jpg",
+    "photos/nature/nature-7.jpg",
+    "photos/nature/nature-8.jpg"
+  ],
+  "trains": [
+    "photos/trains/trains-1.jpg",
+    "photos/trains/trains-2.jpg",
+    "photos/trains/trains-3.jpg",
+    "photos/trains/trains-4.jpg"
+  ]
+}

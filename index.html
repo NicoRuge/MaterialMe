@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Nico — Photographer</title>
+<title>Nico — Fotograf</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
@@ -38,7 +38,6 @@
     localStorage.setItem('mode', mode);
   }
   const initial = localStorage.getItem('mode') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  // apply once body exists
   document.addEventListener('DOMContentLoaded', () => {
     setMode(initial);
     const btn = document.getElementById('mode-toggle');
@@ -62,8 +61,7 @@
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
     }, {threshold: 0.12});
-    const observeReveal = (root = document) => root.querySelectorAll('.reveal').forEach(el => io.observe(el));
-    observeReveal();
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
     loadWritingPosts();
   });
@@ -72,7 +70,7 @@
     if (!iso) return '';
     const d = new Date(iso);
     if (isNaN(d)) return '';
-    return d.toLocaleString('en', { month: 'short', year: 'numeric' });
+    return d.toLocaleString('de', { month: 'short', year: 'numeric' });
   }
 
   function escapeHtml(s = '') {
@@ -90,7 +88,7 @@
       const data = await r.json();
       const posts = data.posts || [];
       if (!posts.length) {
-        list.innerHTML = '<div class="writing-state">No posts yet — check back soon.</div>';
+        list.innerHTML = '<div class="writing-state">Noch keine Beiträge — schau bald wieder vorbei.</div>';
         return;
       }
       list.innerHTML = posts.map((p, i) => `
@@ -110,7 +108,7 @@
         io2.observe(el);
       });
     } catch (err) {
-      list.innerHTML = '<div class="writing-state">Couldn\'t load posts right now.</div>';
+      list.innerHTML = '<div class="writing-state">Beiträge konnten gerade nicht geladen werden.</div>';
       console.error('Failed to load Tumblr posts:', err);
     }
   }
@@ -241,29 +239,12 @@
   .hero-portrait {
     aspect-ratio: 4 / 5;
     border-radius: var(--radius);
-    background:
-      repeating-linear-gradient(135deg,
-        color-mix(in oklab, var(--md-sys-color-primary-container) 70%, transparent) 0 18px,
-        color-mix(in oklab, var(--md-sys-color-primary-container) 50%, transparent) 18px 36px);
+    background-image: url('photos/profile.jpg');
+    background-size: cover;
+    background-position: center;
     border: 1px solid var(--md-sys-color-outline-variant);
-    display: grid; place-items: center;
-    color: var(--md-sys-color-on-primary-container);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 12px;
-    letter-spacing: 0.06em;
     position: relative;
     overflow: hidden;
-  }
-  .hero-portrait::after {
-    content: 'PORTRAIT — 4:5';
-    position: absolute;
-    bottom: 16px; left: 16px;
-    background: var(--md-sys-color-surface);
-    color: var(--md-sys-color-on-surface-variant);
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    border: 1px solid var(--md-sys-color-outline-variant);
   }
 
   /* Stats strip */
@@ -316,6 +297,13 @@
     font-size: 15px;
     line-height: 1.55;
   }
+  .inline-link {
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--md-sys-color-primary) 50%, transparent);
+    transition: border-color .2s;
+  }
+  .inline-link:hover { border-bottom-color: var(--md-sys-color-primary); }
 
   /* Projects grid */
   .projects {
@@ -339,9 +327,10 @@
   }
   .project.tall { grid-column: span 2; }
   .project.wide { grid-column: span 4; }
+  .project.full { grid-column: span 6; }
   @media (max-width: 760px) {
     .projects { grid-template-columns: 1fr; }
-    .project, .project.tall, .project.wide { grid-column: span 1; }
+    .project, .project.tall, .project.wide, .project.full { grid-column: span 1; }
   }
   .project-img {
     aspect-ratio: 4 / 3;
@@ -350,40 +339,15 @@
   }
   .project.tall .project-img { aspect-ratio: 3 / 4; }
   .project.wide .project-img { aspect-ratio: 16 / 9; }
+  .project.full .project-img { aspect-ratio: 21 / 9; }
   .project-img-inner {
     position: absolute; inset: 0;
-    background-size: 24px 24px;
+    background-size: cover;
+    background-position: center;
+    transition: transform .6s var(--easing);
   }
-  .ph-1 .project-img-inner {
-    background:
-      repeating-linear-gradient(45deg,
-        oklch(0.78 0.04 145) 0 14px,
-        oklch(0.72 0.05 145) 14px 28px);
-  }
-  .ph-2 .project-img-inner {
-    background:
-      repeating-linear-gradient(0deg,
-        oklch(0.85 0.03 90) 0 12px,
-        oklch(0.79 0.04 90) 12px 24px);
-  }
-  .ph-3 .project-img-inner {
-    background:
-      repeating-linear-gradient(135deg,
-        oklch(0.68 0.05 200) 0 16px,
-        oklch(0.62 0.06 200) 16px 32px);
-  }
-  .ph-4 .project-img-inner {
-    background:
-      repeating-linear-gradient(90deg,
-        oklch(0.82 0.04 50) 0 14px,
-        oklch(0.76 0.05 50) 14px 28px);
-  }
-  .ph-5 .project-img-inner {
-    background:
-      repeating-linear-gradient(45deg,
-        oklch(0.55 0.04 280) 0 14px,
-        oklch(0.50 0.05 280) 14px 28px);
-  }
+  .project:hover .project-img-inner { transform: scale(1.03); }
+  .project-img-inner { background-color: var(--md-sys-color-surface-container-high); }
   .project-tag {
     position: absolute;
     top: 16px; left: 16px;
@@ -442,13 +406,7 @@
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
     text-decoration: none;
     color: inherit;
-    transition: padding .25s var(--easing), background .25s var(--easing);
     border-radius: 4px;
-  }
-  .post:hover {
-    padding-left: 20px;
-    padding-right: 20px;
-    background: var(--md-sys-color-surface-container-low);
   }
   .post-date {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -475,11 +433,6 @@
   }
   .post-arrow {
     color: var(--md-sys-color-on-surface-variant);
-    transition: transform .25s var(--easing), color .25s var(--easing);
-  }
-  .post:hover .post-arrow {
-    transform: translateX(4px);
-    color: var(--md-sys-color-primary);
   }
   @media (max-width: 720px) {
     .post { grid-template-columns: 1fr; gap: 6px; padding: 20px 4px; }
@@ -558,6 +511,143 @@
     border-bottom: 1px solid var(--md-sys-color-outline-variant);
   }
 
+  /* Equipment */
+  .gear-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+  }
+  @media (max-width: 900px) { .gear-grid { grid-template-columns: 1fr 1fr; gap: 40px; } }
+  @media (max-width: 600px) { .gear-grid { grid-template-columns: 1fr; gap: 32px; } }
+  .gear-col h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--md-sys-color-on-surface);
+    margin: 0 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  }
+  .gear-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .gear-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 14px 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--md-sys-color-outline-variant) 60%, transparent);
+  }
+  .gear-item:last-child { border-bottom: 0; }
+  .gear-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--md-sys-color-on-surface);
+  }
+  .gear-meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--md-sys-color-on-surface-variant);
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    position: fixed; inset: 0; z-index: 100;
+    background: color-mix(in oklab, #000 88%, transparent);
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: center;
+    justify-items: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s var(--easing);
+  }
+  .lightbox[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .lb-stage {
+    grid-row: 2;
+    width: 100%; height: 100%;
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .lb-img {
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 160px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px -10px rgba(0,0,0,.6);
+    user-select: none;
+  }
+  .lb-topbar, .lb-bottombar {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+  .lb-topbar { justify-content: space-between; padding-bottom: 12px; }
+  .lb-bottombar { justify-content: center; padding-top: 12px; gap: 12px; flex-direction: column; }
+  .lb-exif {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: rgba(255,255,255,.6);
+    text-align: center;
+    min-height: 1em;
+  }
+  .lb-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+  .lb-counter {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,.7);
+  }
+  .lb-btn {
+    background: rgba(255,255,255,.08);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,.18);
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    cursor: pointer;
+    transition: background .2s, transform .2s;
+  }
+  .lb-btn:hover { background: rgba(255,255,255,.16); }
+  .lb-btn:active { transform: scale(.95); }
+  .lb-prev, .lb-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .lb-prev { left: 8px; }
+  .lb-next { right: 8px; }
+  @media (max-width: 600px) {
+    .lb-prev { left: 0; }
+    .lb-next { right: 0; }
+  }
+
   /* MD component overrides */
   md-filled-button, md-outlined-button, md-text-button {
     --md-filled-button-container-shape: 999px;
@@ -575,11 +665,12 @@
       <span>Nico</span>
     </a>
     <nav class="nav">
-      <a href="#work" data-jump>Work</a>
-      <a href="#writing" data-jump>Writing</a>
-      <a href="#contact" data-jump>Contact</a>
+      <a href="#work" data-jump>Arbeiten</a>
+      <a href="#writing" data-jump>Texte</a>
+      <a href="#equipment" data-jump>Equipment</a>
+      <a href="#contact" data-jump>Kontakt</a>
     </nav>
-    <md-icon-button id="mode-toggle" aria-label="Toggle theme">
+    <md-icon-button id="mode-toggle" aria-label="Theme umschalten">
       <md-icon>dark_mode</md-icon>
     </md-icon-button>
   </div>
@@ -590,16 +681,16 @@
   <!-- HERO -->
   <section class="hero">
     <div>
-      <span class="eyebrow reveal">Photographer · Berlin</span>
-      <h1 class="reveal d1">Quiet light, <em>slow places</em>, soft edges.</h1>
-      <p class="hero-sub reveal d2">I'm Nico — a photographer working in editorial portraiture and long-form documentary projects. Currently shooting a series on coastal mornings along the North Sea.</p>
+      <span class="eyebrow reveal">Hobby-Fotograf · Rostock / Darmstadt</span>
+      <h1 class="reveal d1">Hey, ich bin <em>Nico</em> :)</h1>
+      <p class="hero-sub reveal d2">Hobby-Fotograf aus Rostock / Darmstadt. Überwiegend Digitalfotografie, aber durchaus auch mit Kodak und Fujifilm analog unterwegs.</p>
       <div class="hero-actions reveal d3">
         <md-filled-button href="#work" onclick="event.preventDefault();document.querySelector('#work').scrollIntoView({behavior:'smooth',block:'start'})">
-          See recent work
+          Aktuelle Arbeiten ansehen
           <md-icon slot="icon">arrow_forward</md-icon>
         </md-filled-button>
         <md-outlined-button href="#contact" onclick="event.preventDefault();document.querySelector('#contact').scrollIntoView({behavior:'smooth',block:'start'})">
-          Get in touch
+          Kontakt aufnehmen
         </md-outlined-button>
       </div>
     </div>
@@ -607,16 +698,16 @@
 
     <div class="stats reveal" style="grid-column: 1 / -1;">
       <div>
-        <div class="stat-num">12</div>
-        <div class="stat-label">Photo series since 2019</div>
+        <div class="stat-num">3</div>
+        <div class="stat-label">Aktive Kategorien</div>
       </div>
       <div>
-        <div class="stat-num">4</div>
-        <div class="stat-label">Group exhibitions</div>
+        <div class="stat-num">18</div>
+        <div class="stat-label">Bilder online</div>
       </div>
       <div>
-        <div class="stat-num">35mm</div>
-        <div class="stat-label">Mostly film, sometimes digital</div>
+        <div class="stat-num">Digital + Analog</div>
+        <div class="stat-label">Kodak, Fujifilm & DSLR</div>
       </div>
     </div>
   </section>
@@ -625,78 +716,50 @@
   <section id="work">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">Selected work</span>
-        <h2>Recent series</h2>
+        <span class="eyebrow">Ausgewählte Arbeiten</span>
+        <h2>Aktuelle Kategorien</h2>
       </div>
-      <p>A small selection of long-running projects. Most are still ongoing — get in touch for full edits or print enquiries.</p>
+      <p>Eine kleine Auswahl meiner Lieblingsmotive — laufend ergänzt. Einige davon liegen auch auf <a class="inline-link" href="https://unsplash.com/@nico_ruge" target="_blank" rel="noopener">Unsplash</a> — eines hat's sogar mal in den Editorial Feed geschafft :D</p>
     </div>
 
     <div class="projects">
-      <a class="project wide ph-1 reveal" href="#">
+      <a class="project wide ph-animals reveal" data-gallery="animals" role="button" tabindex="0">
         <div class="project-img">
           <div class="project-img-inner"></div>
-          <span class="project-tag">Documentary</span>
+          <span class="project-tag">Tiere</span>
         </div>
         <div class="project-meta">
           <div>
-            <h3 class="project-title">Tideline</h3>
-            <p class="project-sub">North Sea coast · 2024–ongoing · 38 images</p>
+            <h3 class="project-title">Animals</h3>
+            <p class="project-sub">6 Bilder</p>
           </div>
           <span class="project-arrow"><md-icon>north_east</md-icon></span>
         </div>
       </a>
 
-      <a class="project tall ph-2 reveal d1" href="#">
+      <a class="project tall ph-nature reveal d1" data-gallery="nature" role="button" tabindex="0">
         <div class="project-img">
           <div class="project-img-inner"></div>
-          <span class="project-tag">Portrait</span>
+          <span class="project-tag">Natur</span>
         </div>
         <div class="project-meta">
           <div>
-            <h3 class="project-title">Kitchen Light</h3>
-            <p class="project-sub">Editorial · 2023</p>
+            <h3 class="project-title">Nature</h3>
+            <p class="project-sub">8 Bilder</p>
           </div>
           <span class="project-arrow"><md-icon>north_east</md-icon></span>
         </div>
       </a>
 
-      <a class="project ph-3 reveal" href="#">
+      <a class="project full ph-trains reveal d2" data-gallery="trains" role="button" tabindex="0">
         <div class="project-img">
           <div class="project-img-inner"></div>
-          <span class="project-tag">Landscape</span>
+          <span class="project-tag">Züge</span>
         </div>
         <div class="project-meta">
           <div>
-            <h3 class="project-title">Slow Hours</h3>
-            <p class="project-sub">Personal · 2022–2023</p>
-          </div>
-          <span class="project-arrow"><md-icon>north_east</md-icon></span>
-        </div>
-      </a>
-
-      <a class="project ph-4 reveal d1" href="#">
-        <div class="project-img">
-          <div class="project-img-inner"></div>
-          <span class="project-tag">Architecture</span>
-        </div>
-        <div class="project-meta">
-          <div>
-            <h3 class="project-title">Concrete &amp; Pine</h3>
-            <p class="project-sub">Commission · 2024</p>
-          </div>
-          <span class="project-arrow"><md-icon>north_east</md-icon></span>
-        </div>
-      </a>
-
-      <a class="project ph-5 reveal d2" href="#">
-        <div class="project-img">
-          <div class="project-img-inner"></div>
-          <span class="project-tag">Night</span>
-        </div>
-        <div class="project-meta">
-          <div>
-            <h3 class="project-title">After Closing</h3>
-            <p class="project-sub">Personal · 2021</p>
+            <h3 class="project-title">Trains</h3>
+            <p class="project-sub">4 Bilder</p>
           </div>
           <span class="project-arrow"><md-icon>north_east</md-icon></span>
         </div>
@@ -708,14 +771,93 @@
   <section id="writing">
     <div class="section-head reveal">
       <div>
-        <span class="eyebrow">Notes &amp; essays</span>
-        <h2>Writing</h2>
+        <span class="eyebrow">Notizen &amp; Gedanken</span>
+        <h2>Texte</h2>
       </div>
-      <p>Occasional thoughts on process, gear, and the practice of looking. New posts every month or two.</p>
+      <p>Gelegentliche Beiträge aus meinem Tumblr — über Fotografie, Reisen und alles dazwischen.</p>
     </div>
 
     <div class="writing" id="writing-list">
-      <div class="writing-state">Loading posts…</div>
+      <div class="writing-state">Beiträge werden geladen…</div>
+    </div>
+  </section>
+
+  <!-- EQUIPMENT -->
+  <section id="equipment">
+    <div class="section-head reveal">
+      <div>
+        <span class="eyebrow">Was ich nutze</span>
+        <h2>Equipment</h2>
+      </div>
+      <p>Eine Mischung aus moderner Digitalfotografie und alten Schätzen aus dem Analogregal.</p>
+    </div>
+
+    <div class="gear-grid">
+      <div class="gear-col reveal">
+        <h3>Kameras</h3>
+        <ul class="gear-list">
+          <li class="gear-item">
+            <span class="gear-name">Sony Alpha 7 III</span>
+            <span class="gear-meta">ILCE-7M3</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Canon EOS 500N</span>
+            <span class="gear-meta">Analog</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Praktica Mat</span>
+            <span class="gear-meta">ca. 1965</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Polaroid Supercolor 635CL</span>
+            <span class="gear-meta">ca. 1981</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Google Pixel 9 Pro</span>
+            <span class="gear-meta">Smartphone</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="gear-col reveal d1">
+        <h3>Objektive</h3>
+        <ul class="gear-list">
+          <li class="gear-item">
+            <span class="gear-name">Sony FE 70-200mm</span>
+            <span class="gear-meta">f/4 G OSS</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Sigma Makro 105mm</span>
+            <span class="gear-meta">f/2.8 DG OS HSM</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Sony FE 28-70mm</span>
+            <span class="gear-meta">f/3.5-5.6</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Samyang 24mm</span>
+            <span class="gear-meta">T1.5 ED AS IF UMC II</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="gear-col reveal d2">
+        <h3>Filme</h3>
+        <ul class="gear-list">
+          <li class="gear-item">
+            <span class="gear-name">Kodak Gold</span>
+            <span class="gear-meta">ISO 200</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Kodak Ektar</span>
+            <span class="gear-meta">ISO 100</span>
+          </li>
+          <li class="gear-item">
+            <span class="gear-name">Ilford HP5 Plus</span>
+            <span class="gear-meta">S/W</span>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -725,27 +867,237 @@
 <footer class="footer" id="contact">
   <div class="footer-inner">
     <div class="reveal">
-      <span class="eyebrow">Get in touch</span>
-      <h3>Working on something I'd like? Let's talk.</h3>
-      <p>Available for editorial commissions, prints, and the occasional long collaboration. I usually reply within a couple of days.</p>
+      <span class="eyebrow">Kontakt</span>
+      <h3>Lust auf einen Austausch? Schreib mir gerne.</h3>
+      <p>Über Nachrichten freue ich mich immer! Antworten kommen meist entweder sofort oder nach 3 Wochen :D</p>
     </div>
     <div class="footer-actions reveal d1">
-      <md-filled-button href="mailto:hello@nico.example" target="_blank">
+      <md-filled-button href="mailto:hello@nico-ruge.de" target="_blank">
         <md-icon slot="icon">mail</md-icon>
-        hello@nico.example
+        hello@nico-ruge.de
       </md-filled-button>
       <div class="socials">
+        <md-text-button href="https://unsplash.com/@nico_ruge" target="_blank" rel="noopener">Unsplash</md-text-button>
+        <md-text-button href="https://t.nico-ruge.de/" target="_blank" rel="noopener">Tumblr</md-text-button>
         <md-text-button href="#">Instagram</md-text-button>
-        <md-text-button href="#">Are.na</md-text-button>
-        <md-text-button href="#">RSS</md-text-button>
       </div>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Nico — All photographs licensed individually.</span>
-    <span>Built with Material 3 Web Components</span>
+    <span>© 2026 Nico</span>
   </div>
 </footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" data-open="false" aria-hidden="true" role="dialog" aria-label="Bildergalerie">
+  <div class="lb-topbar">
+    <span class="lb-title" id="lb-title"></span>
+    <button class="lb-btn lb-close" id="lb-close" aria-label="Schließen"><md-icon>close</md-icon></button>
+  </div>
+  <div class="lb-stage">
+    <button class="lb-btn lb-prev" id="lb-prev" aria-label="Vorheriges Bild"><md-icon>chevron_left</md-icon></button>
+    <img class="lb-img" id="lb-img" alt="" />
+    <button class="lb-btn lb-next" id="lb-next" aria-label="Nächstes Bild"><md-icon>chevron_right</md-icon></button>
+  </div>
+  <div class="lb-bottombar">
+    <span class="lb-counter" id="lb-counter"></span>
+    <span class="lb-exif" id="lb-exif"></span>
+  </div>
+</div>
+
+<script>
+(function () {
+  const LABELS = { animals: 'Animals', nature: 'Nature', trains: 'Trains' };
+
+  // Populated from photos.json at runtime
+  const galleries = {};
+  const exifCache = new Map();
+
+  let exifrPromise = null;
+  function loadExifr() {
+    if (!exifrPromise) {
+      exifrPromise = import('https://esm.run/exifr@7').catch(err => {
+        console.warn('exifr load failed:', err);
+        return null;
+      });
+    }
+    return exifrPromise;
+  }
+
+  const lb       = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lb-img');
+  const lbTitle  = document.getElementById('lb-title');
+  const lbCount  = document.getElementById('lb-counter');
+  const lbExif   = document.getElementById('lb-exif');
+  const lbClose  = document.getElementById('lb-close');
+  const lbPrev   = document.getElementById('lb-prev');
+  const lbNext   = document.getElementById('lb-next');
+
+  let currentKey = null;
+  let currentIdx = 0;
+  let exifToken = 0;
+
+  function formatShutter(t) {
+    if (!t) return null;
+    if (t >= 1) return `${t}s`;
+    return `1/${Math.round(1 / t)}`;
+  }
+
+  function formatExif(d) {
+    if (!d) return '';
+    const parts = [];
+    const cam = [d.Make, d.Model].filter(Boolean).join(' ').trim();
+    if (cam) parts.push(cam);
+    if (d.LensModel) parts.push(d.LensModel);
+    if (d.FocalLength) parts.push(`${Math.round(d.FocalLength)}mm`);
+    if (d.FNumber) parts.push(`f/${d.FNumber}`);
+    const sh = formatShutter(d.ExposureTime);
+    if (sh) parts.push(sh);
+    if (d.ISO) parts.push(`ISO ${d.ISO}`);
+    if (d.DateTimeOriginal) {
+      const dt = new Date(d.DateTimeOriginal);
+      if (!isNaN(dt)) parts.push(dt.toLocaleDateString('de'));
+    }
+    return parts.join(' · ');
+  }
+
+  async function loadExif(url) {
+    if (exifCache.has(url)) return exifCache.get(url);
+    const exifr = await loadExifr();
+    if (!exifr) return null;
+    try {
+      const data = await exifr.parse(url, {
+        pick: ['Make', 'Model', 'LensModel', 'FocalLength', 'FNumber', 'ExposureTime', 'ISO', 'DateTimeOriginal']
+      });
+      exifCache.set(url, data || null);
+      return data;
+    } catch (err) {
+      exifCache.set(url, null);
+      return null;
+    }
+  }
+
+  function render() {
+    const g = galleries[currentKey];
+    if (!g || !g.files.length) return;
+    const url = g.files[currentIdx];
+    lbImg.src = url;
+    lbImg.alt = `${g.name} — Bild ${currentIdx + 1} von ${g.files.length}`;
+    lbTitle.textContent = g.name;
+    lbCount.textContent = `${currentIdx + 1} / ${g.files.length}`;
+    lbExif.textContent = '';
+
+    const token = ++exifToken;
+    loadExif(url).then(data => {
+      if (token !== exifToken) return;
+      lbExif.textContent = formatExif(data);
+    });
+
+    // Preload neighbours
+    const next = (currentIdx + 1) % g.files.length;
+    const prev = (currentIdx - 1 + g.files.length) % g.files.length;
+    new Image().src = g.files[next];
+    new Image().src = g.files[prev];
+  }
+
+  function open(key, idx = 0) {
+    const g = galleries[key];
+    if (!g || !g.files.length) return;
+    currentKey = key;
+    currentIdx = idx;
+    render();
+    lb.dataset.open = 'true';
+    lb.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close() {
+    lb.dataset.open = 'false';
+    lb.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+    currentKey = null;
+  }
+
+  function next() {
+    const g = galleries[currentKey]; if (!g) return;
+    currentIdx = (currentIdx + 1) % g.files.length;
+    render();
+  }
+
+  function prev() {
+    const g = galleries[currentKey]; if (!g) return;
+    currentIdx = (currentIdx - 1 + g.files.length) % g.files.length;
+    render();
+  }
+
+  function applyManifest(manifest) {
+    Object.keys(manifest).forEach(key => {
+      galleries[key] = {
+        name: LABELS[key] || key,
+        files: manifest[key] || [],
+      };
+    });
+
+    document.querySelectorAll('.project[data-gallery]').forEach(el => {
+      const key = el.dataset.gallery;
+      const g = galleries[key];
+      if (!g || !g.files.length) {
+        el.style.display = 'none';
+        return;
+      }
+      const inner = el.querySelector('.project-img-inner');
+      if (inner) {
+        const cover = g.files[Math.floor(Math.random() * g.files.length)];
+        inner.style.backgroundImage = `url('${cover}')`;
+      }
+      const sub = el.querySelector('.project-sub');
+      if (sub) sub.textContent = `${g.files.length} Bild${g.files.length === 1 ? '' : 'er'}`;
+    });
+  }
+
+  async function loadManifest() {
+    try {
+      const r = await fetch('photos.json', { cache: 'no-cache' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      applyManifest(await r.json());
+    } catch (err) {
+      console.error('Failed to load photos.json:', err);
+    }
+  }
+
+  loadManifest();
+
+  // Wire up project tiles
+  document.querySelectorAll('.project[data-gallery]').forEach(el => {
+    el.addEventListener('click', e => {
+      e.preventDefault();
+      open(el.dataset.gallery);
+    });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open(el.dataset.gallery);
+      }
+    });
+  });
+
+  // Lightbox controls
+  lbClose.addEventListener('click', close);
+  lbNext.addEventListener('click', e => { e.stopPropagation(); next(); });
+  lbPrev.addEventListener('click', e => { e.stopPropagation(); prev(); });
+  lb.addEventListener('click', e => {
+    if (e.target === lb || e.target.classList.contains('lb-stage')) close();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (lb.dataset.open !== 'true') return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') next();
+    else if (e.key === 'ArrowLeft') prev();
+  });
+})();
+</script>
 
 </body>
 </html>

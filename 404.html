@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>404 — Seite nicht gefunden · Nico</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<script type="importmap">
+{
+  "imports": {
+    "@material/web/": "https://esm.run/@material/web/",
+    "@material/material-color-utilities": "https://esm.run/@material/material-color-utilities"
+  }
+}
+</script>
+
+<script type="module">
+  import '@material/web/all.js';
+  import { argbFromHex, themeFromSourceColor, applyTheme } from '@material/material-color-utilities';
+  const SAGE = '#7BA68A';
+  const theme = themeFromSourceColor(argbFromHex(SAGE));
+  document.addEventListener('DOMContentLoaded', () => {
+    const mode = localStorage.getItem('mode') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(theme, { target: document.body, dark: mode === 'dark' });
+    document.documentElement.dataset.mode = mode;
+  });
+</script>
+
+<style>
+  :root {
+    --gutter: clamp(20px, 4vw, 48px);
+    --easing: cubic-bezier(.2,.8,.2,1);
+  }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+  }
+  .wrap {
+    max-width: 560px;
+    padding: 64px var(--gutter);
+    text-align: center;
+  }
+  .code {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(96px, 18vw, 180px);
+    line-height: 1;
+    color: var(--md-sys-color-primary);
+    letter-spacing: -0.04em;
+    margin: 0;
+  }
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 24px 0 12px;
+    color: var(--md-sys-color-on-surface);
+  }
+  p {
+    color: var(--md-sys-color-on-surface-variant);
+    font-size: 16px;
+    line-height: 1.55;
+    margin: 0 0 32px;
+  }
+  md-filled-button {
+    --md-filled-button-container-shape: 999px;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <p class="code">404</p>
+    <h1>Hier ist nichts.</h1>
+    <p>Diese Seite gibt es nicht — oder nicht mehr. Vielleicht ist sie auch nur sehr gut versteckt.</p>
+    <md-filled-button href="/">
+      <md-icon slot="icon">arrow_back</md-icon>
+      Zurück zur Startseite
+    </md-filled-button>
+  </div>
+</body>
+</html>
