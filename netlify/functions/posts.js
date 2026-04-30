@@ -34,8 +34,10 @@ exports.handler = async () => {
         id: String(p.id),
         title: p.title || stripHtml(body).slice(0, 80) || '(untitled)',
         excerpt,
+        body,
         date: p.date,
         url: p.post_url,
+        tags: p.tags || [],
       };
     });
 

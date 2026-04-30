@@ -79,6 +79,8 @@
     }[c]));
   }
 
+  const postCache = new Map();
+
   async function loadWritingPosts() {
     const list = document.getElementById('writing-list');
     if (!list) return;
@@ -91,8 +93,9 @@
         list.innerHTML = '<div class="writing-state">Noch keine Beiträge — schau bald wieder vorbei.</div>';
         return;
       }
+      posts.forEach(p => postCache.set(p.id, p));
       list.innerHTML = posts.map((p, i) => `
-        <a class="post reveal${i < 3 ? ' d' + (i + 1) : ''}" href="${escapeHtml(p.url || '#')}" target="_blank" rel="noopener">
+        <a class="post reveal${i < 3 ? ' d' + (i + 1) : ''}" href="${escapeHtml(p.url || '#')}" data-post-id="${escapeHtml(p.id)}" role="button" tabindex="0">
           <div class="post-date">${escapeHtml(formatPostDate(p.date))}</div>
           <div>
             <h3 class="post-title">${escapeHtml(p.title)}</h3>
@@ -101,6 +104,18 @@
           <md-icon class="post-arrow">arrow_forward</md-icon>
         </a>
       `).join('');
+      list.querySelectorAll('.post[data-post-id]').forEach(el => {
+        el.addEventListener('click', e => {
+          e.preventDefault();
+          openPostModal(el.dataset.postId);
+        });
+        el.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openPostModal(el.dataset.postId);
+          }
+        });
+      });
       list.querySelectorAll('.reveal').forEach(el => {
         const io2 = new IntersectionObserver((entries) => {
           entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
@@ -112,6 +127,50 @@
       console.error('Failed to load Tumblr posts:', err);
     }
   }
+
+  function openPostModal(id) {
+    const post = postCache.get(id);
+    if (!post) return;
+    const modal  = document.getElementById('post-modal');
+    const date   = document.getElementById('pm-date');
+    const title  = document.getElementById('pm-title');
+    const body   = document.getElementById('pm-body');
+    const tags   = document.getElementById('pm-tags');
+    const source = document.getElementById('pm-source');
+
+    date.textContent = formatPostDate(post.date);
+    title.textContent = post.title || '';
+    body.innerHTML = post.body || '';
+    body.querySelectorAll('a').forEach(a => { a.target = '_blank'; a.rel = 'noopener'; });
+    body.scrollTop = 0;
+
+    tags.innerHTML = (post.tags || []).map(t =>
+      `<span class="pm-tag">${escapeHtml(t)}</span>`
+    ).join('');
+    source.href = post.url || '#';
+
+    modal.dataset.open = 'true';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePostModal() {
+    const modal = document.getElementById('post-modal');
+    modal.dataset.open = 'false';
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('post-modal');
+    document.getElementById('pm-close').addEventListener('click', closePostModal);
+    modal.addEventListener('click', e => {
+      if (e.target === modal) closePostModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (modal.dataset.open === 'true' && e.key === 'Escape') closePostModal();
+    });
+  });
 </script>
 
 <style>
@@ -560,6 +619,162 @@
     flex-shrink: 0;
   }
 
+  /* Post modal */
+  .post-modal {
+    position: fixed; inset: 0; z-index: 100;
+    background: color-mix(in oklab, #000 60%, transparent);
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s var(--easing);
+    overflow-y: auto;
+  }
+  .post-modal[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .pm-card {
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+    max-width: 720px;
+    width: 100%;
+    max-height: calc(100vh - 48px);
+    border-radius: var(--radius);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    box-shadow: 0 20px 60px -10px rgba(0,0,0,.4);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(8px) scale(.98);
+    transition: transform .3s var(--easing);
+  }
+  .post-modal[data-open="true"] .pm-card {
+    transform: none;
+  }
+  .pm-head {
+    padding: 24px 32px 16px;
+    border-bottom: 1px solid var(--md-sys-color-outline-variant);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .pm-head-text { flex: 1; min-width: 0; }
+  .pm-date {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--md-sys-color-on-surface-variant);
+    text-transform: uppercase;
+    margin: 0 0 6px;
+  }
+  .pm-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: clamp(22px, 3vw, 30px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--md-sys-color-on-surface);
+    margin: 0;
+    text-wrap: balance;
+  }
+  .pm-close {
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+    border: 1px solid var(--md-sys-color-outline-variant);
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background .2s;
+  }
+  .pm-close:hover { background: var(--md-sys-color-surface-container-high); }
+  .pm-body {
+    padding: 24px 32px;
+    overflow-y: auto;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--md-sys-color-on-surface);
+  }
+  .pm-body p { margin: 0 0 1em; text-wrap: pretty; }
+  .pm-body p:last-child { margin-bottom: 0; }
+  .pm-body a {
+    color: var(--md-sys-color-primary);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in oklab, var(--md-sys-color-primary) 50%, transparent);
+  }
+  .pm-body a:hover { border-bottom-color: var(--md-sys-color-primary); }
+  .pm-body h1, .pm-body h2, .pm-body h3 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 1.4em 0 .5em;
+  }
+  .pm-body h1 { font-size: 24px; }
+  .pm-body h2 { font-size: 20px; }
+  .pm-body h3 { font-size: 18px; }
+  .pm-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+    margin: 12px 0;
+  }
+  .pm-body blockquote {
+    margin: 1em 0;
+    padding: 8px 16px;
+    border-left: 3px solid var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-surface-variant);
+    font-style: italic;
+  }
+  .pm-body pre, .pm-body code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    background: var(--md-sys-color-surface-container);
+    border-radius: 6px;
+  }
+  .pm-body code { padding: 2px 6px; font-size: 0.9em; }
+  .pm-body pre { padding: 12px 16px; overflow-x: auto; }
+  .pm-body pre code { background: transparent; padding: 0; }
+  .pm-body ul, .pm-body ol { padding-left: 1.4em; margin: 0 0 1em; }
+  .pm-body li { margin-bottom: .3em; }
+  .pm-foot {
+    padding: 16px 32px;
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .pm-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--md-sys-color-on-surface-variant);
+    letter-spacing: 0.04em;
+  }
+  .pm-tag::before { content: '#'; opacity: .6; }
+  .pm-source {
+    color: var(--md-sys-color-primary);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .pm-source:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .post-modal { padding: 0; }
+    .pm-card { max-height: 100vh; height: 100vh; border-radius: 0; border: 0; }
+    .pm-head, .pm-foot { padding-left: 20px; padding-right: 20px; }
+    .pm-body { padding: 20px; }
+  }
+
   /* Lightbox */
   .lightbox {
     position: fixed; inset: 0; z-index: 100;
@@ -887,6 +1102,26 @@
     <span>© 2026 Nico</span>
   </div>
 </footer>
+
+<!-- POST MODAL -->
+<div class="post-modal" id="post-modal" data-open="false" aria-hidden="true" role="dialog" aria-label="Beitrag">
+  <div class="pm-card">
+    <div class="pm-head">
+      <div class="pm-head-text">
+        <p class="pm-date" id="pm-date"></p>
+        <h2 class="pm-title" id="pm-title"></h2>
+      </div>
+      <button class="pm-close" id="pm-close" aria-label="Schließen"><md-icon>close</md-icon></button>
+    </div>
+    <div class="pm-body" id="pm-body"></div>
+    <div class="pm-foot">
+      <div class="pm-tags" id="pm-tags"></div>
+      <a class="pm-source" id="pm-source" href="#" target="_blank" rel="noopener">
+        Auf Tumblr ansehen <md-icon style="font-size: 16px;">north_east</md-icon>
+      </a>
+    </div>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" data-open="false" aria-hidden="true" role="dialog" aria-label="Bildergalerie">
