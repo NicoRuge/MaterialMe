@@ -278,7 +278,7 @@
   <div class="reveal">
     <span class="eyebrow">ICEinfo App</span>
     <h1 class="page-title">Privacy Policy /<br>Datenschutzerklärung</h1>
-    <p class="page-meta">Gültig ab / Effective Date: 24. April 2026</p>
+    <p class="page-meta">Gültig ab / Effective Date: 13. Mai 2026</p>
   </div>
 
   <!-- ── German ── -->
@@ -289,18 +289,26 @@
     <p>Diese Datenschutzerklärung erklärt, wie die ICEinfo Android‑App ("die App") mit Informationen umgeht.</p>
 
     <h2>Keine Erhebung personenbezogener Daten</h2>
-    <p>Die App erhebt, speichert oder verarbeitet keinerlei personenbezogene Daten von Nutzern. Es werden keine Namen, E‑Mail‑Adressen, Telefonnummern, dauerhafte Gerätekennungen oder sonstige personenbezogene Identifikatoren erfasst.</p>
-    <p>Die App verwendet keine Analyse‑Tools, Werbenetzwerke, Tracker oder Cookies.</p>
+    <p>Die App erhebt, speichert oder verarbeitet standardmäßig keinerlei personenbezogene Daten von Nutzern. Es werden keine Namen, E‑Mail‑Adressen, Telefonnummern, dauerhafte Gerätekennungen oder sonstige personenbezogene Identifikatoren erfasst.</p>
+    <p>Standardmäßig verwendet die App keine Analyse‑Tools, Werbenetzwerke, Tracker oder Cookies. Eine optionale Ausnahme ist das Crash‑Reporting, das ausschließlich nach aktiver Zustimmung des Nutzers aktiviert wird (siehe Abschnitt „Crash‑Reporting").</p>
 
     <h2>Datenquellen &amp; Netzwerkverwendung</h2>
     <p>Die App ruft Informationen von einer externen API ab, die von <strong>DB Systel GmbH</strong> betrieben wird. Die API‑Anfragen erfolgen nur, wenn das Gerät mit dem Bord‑WLAN der deutschen ICE‑Züge (betrieben von <strong>DB Fernverkehr AG</strong>) verbunden ist.</p>
+    <p>Zusätzlich ruft die App Abfahrtsdaten für Anschlussbahnhöfe von der öffentlichen API <strong>v6.db.transport.rest</strong> ab, einem unabhängigen Community‑Dienst auf Basis der DB‑Daten.</p>
     <p>Die App lädt keine Nutzerdaten oder persönliche Inhalte auf entfernte Server hoch. Netzwerkzugriffe dienen ausschließlich dem Abruf der angezeigten Daten.</p>
+
+    <h2>Crash‑Reporting (optional, opt‑in)</h2>
+    <p>Beim ersten Start der App und nach jedem Update wirst du gefragt, ob du anonyme Absturzberichte senden möchtest. Standardmäßig ist diese Funktion <strong>deaktiviert</strong>. Sie kann jederzeit in den App‑Einstellungen wieder ein‑ oder ausgeschaltet werden.</p>
+    <p>Falls aktiviert, sendet die App bei einem Absturz folgende Informationen über <strong>Firebase Crashlytics</strong> (Google Ireland Ltd.) an die Server von Google:</p>
+    <p>Stacktrace des Absturzes, App‑Version, Android‑Version, Gerätemodell, Sprache, verfügbarer Arbeits‑ und Speicherplatz, ungefähre Region (abgeleitet aus der IP‑Adresse) sowie eine zufällig generierte Installations‑ID. Diese Installations‑ID ist nicht mit deinem Google‑Konto oder anderen persönlichen Identifikatoren verknüpft.</p>
+    <p>Diese Daten werden ausschließlich zur Stabilitäts‑ und Qualitätsverbesserung der App verwendet. Sie werden nicht mit Dritten geteilt und nicht für Werbe‑ oder Profiling‑Zwecke verwendet. Rechtsgrundlage ist deine ausdrückliche Einwilligung gemäß Art. 6 Abs. 1 lit. a DSGVO, die du jederzeit widerrufen kannst.</p>
+    <p>Weitere Informationen zur Datenverarbeitung durch Firebase Crashlytics: <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></p>
 
     <h2>Dritte &amp; Zugehörigkeit</h2>
     <p>Die API wird von DB Systel GmbH betrieben; das Bord‑WLAN wird in Zügen der DB Fernverkehr AG bereitgestellt. Die App ist unabhängig und steht in keiner Verbindung zu Deutsche Bahn AG oder deren Tochtergesellschaften. Erwähnungen dieser Organisationen dienen lediglich der Quellenkennzeichnung.</p>
 
     <h2>Datenspeicherung &amp; Sicherheit</h2>
-    <p>Da die App keine personenbezogenen Daten erhebt, erfolgt keine Speicherung solcher Daten. Die App nutzt übliche Sicherheitsmaßnahmen für API‑Anfragen und lokale Betriebsdaten. Die Sicherheit und Verfügbarkeit des Bord‑WLANs sowie der API liegen in der Verantwortung der jeweiligen Betreiber.</p>
+    <p>Da die App standardmäßig keine personenbezogenen Daten erhebt, erfolgt keine Speicherung solcher Daten. Bei aktiviertem Crash‑Reporting werden die oben genannten Daten verschlüsselt (HTTPS) an Firebase übertragen und gemäß den Aufbewahrungsfristen von Google Firebase Crashlytics gespeichert (in der Regel 90 Tage für detaillierte Crash‑Reports). Die Sicherheit und Verfügbarkeit des Bord‑WLANs sowie der APIs liegen in der Verantwortung der jeweiligen Betreiber.</p>
 
     <h2>Kinder</h2>
     <p>Die App richtet sich nicht an Kinder unter 16 Jahren und erhebt nicht wissentlich personenbezogene Daten von Kindern.</p>
@@ -326,18 +334,26 @@
     <p>This Privacy Policy explains how the <strong>ICEinfo</strong> Android app ("the App") handles information.</p>
 
     <h2>No Collection of Personal Data</h2>
-    <p>The App does not collect, store, or process any personal data from users. The App does not collect names, email addresses, phone numbers, persistent device identifiers, or any other information that can be used to identify an individual.</p>
-    <p>The App does not use analytics, advertising networks, trackers, or cookies.</p>
+    <p>By default, the App does not collect, store, or process any personal data from users. The App does not collect names, email addresses, phone numbers, persistent device identifiers, or any other information that can be used to identify an individual.</p>
+    <p>By default, the App does not use analytics, advertising networks, trackers, or cookies. An optional exception is crash reporting, which is only enabled after the user explicitly opts in (see the "Crash Reporting" section).</p>
 
     <h2>Data Sources &amp; Network Use</h2>
     <p>The App retrieves data from an external API operated by <strong>DB Systel GmbH</strong>. These API requests are made only when the device is connected to the onboard Wi‑Fi on German high‑speed trains operated by <strong>DB Fernverkehr AG</strong>.</p>
+    <p>In addition, the App retrieves departure board data for connecting stations from the public <strong>v6.db.transport.rest</strong> API, an independent community service built on DB data.</p>
     <p>The App does not upload user content or personal information to remote servers. Network requests are limited to fetching the data displayed in the App.</p>
+
+    <h2>Crash Reporting (optional, opt‑in)</h2>
+    <p>On first launch and once after every app update, you are asked whether you want to send anonymous crash reports. This feature is <strong>disabled by default</strong>. It can be toggled on or off at any time in the App's settings.</p>
+    <p>If enabled, the App sends the following information via <strong>Firebase Crashlytics</strong> (Google Ireland Ltd.) to Google's servers when a crash occurs:</p>
+    <p>The crash stacktrace, app version, Android version, device model, language, available RAM and storage, approximate region (derived from the IP address), and a randomly generated installation ID. This installation ID is not linked to your Google account or any other personal identifier.</p>
+    <p>This data is used exclusively to improve the stability and quality of the App. It is not shared with third parties and not used for advertising or profiling purposes. The legal basis is your explicit consent under Art. 6(1)(a) GDPR, which you may withdraw at any time.</p>
+    <p>More information on data processing by Firebase Crashlytics: <a href="https://firebase.google.com/support/privacy">firebase.google.com/support/privacy</a></p>
 
     <h2>Third Parties &amp; Affiliation</h2>
     <p>The external API is operated by DB Systel GmbH and the onboard Wi‑Fi is provided on trains operated by DB Fernverkehr AG. The App is independent and is not affiliated with Deutsche Bahn AG or any of its subsidiaries. References to those organizations are solely to identify data sources and network providers.</p>
 
     <h2>Data Retention &amp; Security</h2>
-    <p>Because the App does not collect personal data, there is no user personal data retention. The App follows standard security practices for making API requests and storing only minimal local data required for operation. The security and availability of the onboard Wi‑Fi and the API are controlled by the network and API operators.</p>
+    <p>Because the App does not collect personal data by default, there is no user personal data retention. When crash reporting is enabled, the data listed above is transmitted to Firebase over HTTPS and stored according to Google Firebase Crashlytics retention policies (typically 90 days for detailed crash reports). The security and availability of the onboard Wi‑Fi and the APIs are controlled by the network and API operators.</p>
 
     <h2>Children</h2>
     <p>The App is not directed to children under 16 and does not knowingly collect personal data from children.</p>
@@ -358,7 +374,7 @@
 <footer class="footer">
   <div class="footer-bottom">
     <span>© 2026 Nico · ICEinfo</span>
-    <span>Last updated: 24 April 2026</span>
+    <span>Last updated: 13 May 2026</span>
   </div>
 </footer>
 
