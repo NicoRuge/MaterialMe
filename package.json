@@ -1,0 +1,11 @@
+{
+  "name": "materialme",
+  "private": true,
+  "scripts": {
+    "build:photos": "node scripts/build-photos.js",
+    "optimize:photos": "node scripts/optimize-photos.js"
+  },
+  "devDependencies": {
+    "sharp": "^0.33.5"
+  }
+}
